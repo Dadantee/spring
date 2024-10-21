@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+
 @RestController
 public class BookApiController {
 
@@ -43,5 +45,9 @@ public class BookApiController {
     @DeleteMapping("/api/v1/book/{id}")
     public BookEntity delete(@PathVariable("id") Integer id){
         return bookService.delete(id).orElseThrow(ResourceNotFoundException::new);
+    }
+    @PatchMapping("/api/v1/book/{id}")
+    public BookEntity patch(@PathVariable("id") Integer id, @RequestBody Map<String,String> fields){
+        return bookService.putRequest(id, fields).orElseThrow(ResourceNotFoundException::new);
     }
 }

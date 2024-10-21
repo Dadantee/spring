@@ -2,10 +2,8 @@ package com.inversion.spring.book.service;
 
 import com.inversion.spring.book.entity.BookEntity;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Random;
+
+import java.util.*;
 
 @Service
 public class BookService {
@@ -61,5 +59,20 @@ public class BookService {
         BookEntity oldToDelete = bookToDelete.get();
         bookStorage.remove(bookToDelete.get());
         return Optional.of(oldToDelete);
+    }
+
+    public Optional<BookEntity> putRequest(Integer id, Map<String, String> fields){
+        Optional<BookEntity> bookToPut = byId(id);
+        if(bookToPut.isEmpty()){
+            return Optional.empty();
+        }
+        BookEntity oldToPut = bookToPut.get();
+        for (String key: fields.keySet()) {
+            switch (key){
+                case "title" -> oldToPut.setTitle(fields.get(key));
+                case "description" -> oldToPut.setDescription(fields.get(key));
+            }
+        }
+        return Optional.of(oldToPut);
     }
 }
