@@ -48,4 +48,13 @@ public class BookService {
        bookToEdit.setDescription(book.getDescription());
        return Optional.of(bookToEdit);
     }
+
+    public Boolean delete(Integer id){
+        Optional<BookEntity> bookToDelete = byId(id);
+        if (bookToDelete.isEmpty()){
+            return false;
+        }
+        bookStorage.remove(bookToDelete.get());
+        return true;
+    }
 }
