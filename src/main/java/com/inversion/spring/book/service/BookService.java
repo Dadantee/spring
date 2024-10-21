@@ -43,18 +43,23 @@ public class BookService {
     }
 
     public Optional<BookEntity> edit(BookEntity book){
-       BookEntity bookToEdit = byId(book.getId()).orElseThrow();
+       Optional<BookEntity> bookOptional = byId(book.getId());
+       if(bookOptional.isEmpty()){
+            return Optional.empty();
+       }
+       BookEntity bookToEdit = bookOptional.get();
        bookToEdit.setTitle(book.getTitle());
        bookToEdit.setDescription(book.getDescription());
        return Optional.of(bookToEdit);
     }
 
-    public Boolean delete(Integer id){
+    public Optional<BookEntity>  delete(Integer id){
         Optional<BookEntity> bookToDelete = byId(id);
         if (bookToDelete.isEmpty()){
-            return false;
+            return Optional.empty();
         }
+        BookEntity oldToDelete = bookToDelete.get();
         bookStorage.remove(bookToDelete.get());
-        return true;
+        return Optional.of(oldToDelete);
     }
 }
